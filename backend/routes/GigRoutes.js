@@ -3,5 +3,6 @@ const { getAllGigs, addNewGig } = require('../controller/gigController.js');
 const route = express.Router();
 
 route.get('/', getAllGigs);
-route.get('/add', addNewGig);
+route.post('/add', addNewGig);
+
 module.exports = route;

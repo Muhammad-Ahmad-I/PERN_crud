@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { serverURL } from '../../environment';
+import axios from 'axios';
 
 const AddPagesGig = () => {
+  const [gigTitle, setGigTitle] = useState('');
+  const [technologiesReq, setTechnologiesReq] = useState('');
+  const [budget, setBudget] = useState('');
+  const [gigDescription, setGigDescription] = useState('');
+  const [contact_email, setContact_email] = useState('');
+
+  const CreateGigHandler = (e) => {
+    e.preventDefault();
+    RegisterNewGigHandler();
+  };
+  const RegisterNewGigHandler = async () => {
+    await axios
+      .post(`${serverURL}/gigs/add`, {
+        gigTitle,
+        technologiesReq,
+        budget,
+        gigDescription,
+        contact_email,
+      })
+      .then((res) => {
+        console.log('NewGigCreated');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <section id="add" class="container">
       <div class="form-wrap">
@@ -9,7 +38,7 @@ const AddPagesGig = () => {
           Your contact email will be shared with registered users to apply to
           your gig
         </p>
-        <form>
+        <form onSubmit={(e) => CreateGigHandler(e)}>
           <div class="input-group">
             <label for="title">Gig Title</label>
             <input
@@ -19,6 +48,9 @@ const AddPagesGig = () => {
               class="input-box"
               placeholder="eg. Small Wordpress website, React developer"
               maxlength="100"
+              onChange={(e) => {
+                setGigTitle(e.target.value);
+              }}
               required
             />
           </div>
@@ -31,6 +63,7 @@ const AddPagesGig = () => {
               class="input-box"
               placeholder="eg. javascript, react, PHP"
               maxlength="100"
+              onChange={(e) => setTechnologiesReq(e.target.value)}
             />
           </div>
           <div class="input-group">
@@ -41,6 +74,7 @@ const AddPagesGig = () => {
               id="budget"
               class="input-box"
               placeholder="eg. 500, 5000, 10000"
+              onChange={(e) => setBudget(e.target.value)}
             />
           </div>
           <div class="input-group">
@@ -52,6 +86,7 @@ const AddPagesGig = () => {
               placeholder="Describe the details of the gig"
               rows="10"
               required
+              onChange={(e) => setGigDescription(e.target.value)}
             ></textarea>
           </div>
           <div class="input-group">
@@ -62,6 +97,7 @@ const AddPagesGig = () => {
               id="contactemail"
               class="input-box"
               placeholder="Enter an email"
+              onChange={(e) => setContact_email(e.target.value)}
               required
             />
           </div>
